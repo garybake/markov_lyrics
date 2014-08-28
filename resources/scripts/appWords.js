@@ -3,7 +3,7 @@ $(function() {
 / Converted from python code
 / https://realpython.com/blog/python/lyricize-a-flask-app-to-create-lyrics-using-markov-chains/
 */
-    var generateModel = function(txt, order){
+    function generateModel(txt, order){
         model = {};
         txt = txt.toLowerCase();
         txtArray = txt.replace(".", " .").match(/\S+/g);
@@ -21,13 +21,13 @@ $(function() {
             }
         }
         return model;
-    };
+    }
 
-    var randomChoice = function(arr) {
+    function randomChoice(arr) {
         return arr[Math.floor(arr.length * Math.random())];
-    };
+    }
 
-    var getNextWord = function(model, fragment){
+    function getNextWord(model, fragment){
         var words = [];
         for (var word in model[fragment]) {
             if (model[fragment].hasOwnProperty(word)) {
@@ -38,9 +38,9 @@ $(function() {
         }
         var ch = randomChoice(words);
         return ch;
-    };
+    }
 
-    var generateText = function(text, order, length){
+    function generateText(text, order, length){
         var model = generateModel(text, order);
         // console.log(model);
         var currentFragment = text.slice(0, order);
@@ -52,11 +52,11 @@ $(function() {
             currentFragment = newWord;
         }
         return output.join(" ").replace(/\./g, '.<br />');
-    };
+    }
 
-    var runGenerator = function(){
+    function runGenerator(){
         if (!text.length){
-           $.get('./data/alanis.txt', function (response) {
+           $.get('./resources/data/alanis.txt', function (response) {
                 text = response;
                 text = text.toLowerCase();
                 var wrds = generateText(text, 1, 40);
@@ -68,13 +68,12 @@ $(function() {
             var wrds = generateText(text, 1, 40);
             return(wrds);
         }
-    };
+    }
 
     $("#generateBtn").click(function (e) {
         $('.txtMe').html(runGenerator());
     });
 
     var text = "";
-    // var wrdsModel = {};
     runGenerator();
 });
